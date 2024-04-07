@@ -1,6 +1,6 @@
 #![allow(dead_code)]
 
-use std::{collections::HashMap, hash::Hash};
+use std::collections::HashMap;
 
 
 
@@ -89,6 +89,19 @@ impl GDClient {
         return self.post("/database/getGJUsers20.php".to_string(), fields).await
     }
 
+    /* TODO: make search levels more dynamic once I get the hang of writing rust... */
+
+    pub (crate) async fn search_levels_by_str(&self, 
+        name_or_id:String,
+        page:i32) -> Result<reqwest::Response, reqwest::Error> {
+        let mut fields: HashMap<&str, String> = HashMap::new();
+        fields.insert("secret", "Wmfd2893gb7".to_string());
+        fields.insert("str", name_or_id);
+        fields.insert("page", page.to_string());
+        fields.insert("type", "0".to_string());
+        return self.post("/database/getGJLevels21.php".to_string(), fields).await;
+    }
+
     /// Uploads a level Comment to geometry dash
     /// Important Paremeters
     /// - chk: the checksum value of the comment this must be encoded 
@@ -119,10 +132,31 @@ impl GDClient {
     pub (crate) async fn upload_profile_comment(
         &self,
         accountid:String,
-        username:String,
         gjp2:String,
-    ){
+        comment:String
+    ) -> Result<reqwest::Response, reqwest::Error> {
+        let mut fields: HashMap<&str, String> = HashMap::new();
+        fields.insert("secret", "Wmfd2893gb7".to_string());
+        fields.insert("accountID",accountid);
+        fields.insert("gjp2", gjp2);
+        fields.insert("comment", comment);
+        return self.post("/database/uploadGJAccComment20.php".to_string(), fields).await;
+    }
 
+    /// NOTE: (For myself mainly) https://wyliemaster.github.io/gddocs/#/endpoints/accounts/loginGJAccount?id=parameters
+
+    pub (crate) async fn login_account(
+        &self,
+        username:String,
+        password:String,
+        udid:String
+    ) -> Result<reqwest::Response, reqwest::Error> {
+        let mut fields:HashMap<&str, String> = HashMap::new();
+        fields.insert("secret", "Wmfv3899gc9".to_string());
+        fields.insert("username", username);
+        fields.insert("password", password);
+        fields.insert("udid", udid);
+        return self.post("/database/loginGJAccount.php".to_string(), fields).await;
     }
 
 }
