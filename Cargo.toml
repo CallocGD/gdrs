@@ -1,0 +1,11 @@
+[package]
+name = "gdrs"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+# This is what is in it so far we are likely going to need a sha1 implementation for chk and gjp and base64 stuff... 
+[dependencies]
+reqwest = { version = "0.11", features = ["json"] }
+tokio = { version = "1", features = ["full"] }
